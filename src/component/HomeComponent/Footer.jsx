@@ -1,7 +1,8 @@
 
-import { Box, Container, Link, SimpleGrid, Stack, Text, IconButton, useColorModeValue, HStack, Divider, Image, Center, Grid,
+import { Box, Container, Link, SimpleGrid, Stack, Text, IconButton, useColorModeValue, HStack, Divider, Image, Center, Grid, 
 } from '@chakra-ui/react';
 import { FaInstagram, FaTwitter, FaYoutube,FaUser, FaFacebook, FaPinterest } from 'react-icons/fa';
+import { NavLink } from 'react-router-dom';
 export default function Footer() {
   const text = useColorModeValue('light','dark')
   const textColor = text==='dark'?'gray.100':'blackAlpha.900'
@@ -14,11 +15,12 @@ export default function Footer() {
       color={useColorModeValue('gray.700', 'gray.200')} border="0.2px solid lightgray" w="100%">
       <Container as={Stack} maxW={'8xl'} py={19} >
         <SimpleGrid
-          templateColumns={{ sm: '1fr 1fr', md: '1fr 1fr 1fr 1.5fr' }}
+          templateColumns={{ sm: '1fr 1fr', md: '1fr 1fr' }}
           spacing={2} py={18}>
           <Stack spacing={2}>
             <Text fontSize={16} fontWeight="bolder">Về chúng tôi</Text>
             <Link fontSize={14}>Thông tin cửa hàng</Link>
+            <Link href='map' fontSize={14}>Vị trí cửa hàng</Link>
          
           </Stack>
           <Stack align={'flex-start'} borderLeft="1px solid lightgray" spacing={10}>
@@ -39,6 +41,7 @@ export default function Footer() {
             <Divider  w="100%"/>
           </Stack>
         </SimpleGrid>
+        <span style={{color:'grey',textAlign:'center'}}> {`@Copyright ${(new Date).getFullYear()}- laptop store`}</span>
       </Container>
     </Box>
     </>

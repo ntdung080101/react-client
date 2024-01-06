@@ -1,0 +1,83 @@
+.chat {
+    /* position: absolute; */
+    right: 60px;
+    bottom: 80px;
+    position: fixed;
+}
+
+.chat > button {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    border: none;
+    background-image: url('facebook.svg');
+    background-size: contain;
+    right: 30px;
+    bottom: -60px;
+}
+.chat .body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    width: 300px;
+    height: 500px;
+    background-color: white;
+    transition: 0.1s;
+
+    border: 1px solid grey;
+    border-radius: 25px;
+}
+
+.chat .body .top {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgb(230, 224, 224);
+    padding: 5px 10px
+}
+
+.chat .body .top button{
+    border-radius: 100%;
+    width: 30px;
+    height: 30px;
+    border: none
+}
+
+.chat .body .bottom {
+    display: flex;
+    border-top: 1px solid grey;
+    padding: 5px 10px;
+    justify-content: space-between;
+}
+
+.chat .body .bottom button{
+    border-radius: 100%;
+    width: 60px;
+    height: 40px;
+    padding: 10px;
+    background-image: url('send.svg');
+    background-repeat: no-repeat;
+    background-color: inherit;
+    background-size: contain; 
+    outline: nont;
+    border: none;
+}
+
+.chat .body ul {
+    padding: 20px;
+    height: 400px;
+}
+.chat .body ul li{
+    list-style-type: none;
+    text-align: left;
+    padding: 5px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background-color: rgb(233, 224, 224);
+}
+
+.chat .body ul li.me{
+    text-align: right;
+    background-color: rgb(83, 199, 83);
+}

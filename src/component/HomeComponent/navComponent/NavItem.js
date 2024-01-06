@@ -21,11 +21,7 @@ export const NAV_ITEMS = [
                 href: '#',
             },
         ],
-    },
-    {
-        label: 'Sản phẩm',
-        href:'/products'
-    },
+    }
 ];
 
 export const shopCategory = [

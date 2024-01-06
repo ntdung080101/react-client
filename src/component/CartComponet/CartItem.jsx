@@ -46,7 +46,6 @@ export default function CartItem({
   }); // this for shoing total price
 
 
-
   const handleQuantity = (e) => {
 
     const upDatedData = cart.map((el) => {

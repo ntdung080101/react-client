@@ -62,7 +62,7 @@ const CartPage = () => {
   return (
     status ? <ProductPage /> :
     <>
-      <Box bgColor={bg} justifyContent={{base:'center',md:'center',lg:'flex'}}  display={"flex"} flexDirection={{ base: 'column', sm: cart.length>0 && "row", md: "column", lg: cart.length>0 && 'row' }}  paddingTop={"20px"} p={'3%'}>
+      <Box bgColor={bg} justifyContent={{base:'center',md:'center',lg:'flex'}}  display={"flex"} flexDirection={{ base: 'column', sm: cart.length>0 && "row", md: "column", lg: cart.length>0 && 'row' }}  paddingTop={"20px"} p={'6% 3%'}>
 
         <Flex width={{base:'100%',sm:'90%',md: '100%'}} justifyContent={'center'} direction={'column'}  mt={{base:'50px',md:'20px',lg:'10px'}} >
           <Center color={text} fontWeight={'bold'} fontSize={'24px'} pt={{base:'40px',md:''}}>Giỏ hàng</Center>

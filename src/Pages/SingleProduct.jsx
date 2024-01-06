@@ -1,4 +1,3 @@
-
 import {
   Badge,
   Box,
@@ -22,7 +21,7 @@ import NewLeft from '../component/SingleProduct/NewLeft';
 import NewRight from '../component/SingleProduct/NewRight';
 import { extendTheme } from '@chakra-ui/react';
 import Footer from '../component/HomeComponent/Footer';
-
+import CommentBox from '../component/SingleProduct/CommentBox';
 
 // 2. Update the breakpoints as key-value pairs
 const breakpoints = {
@@ -40,8 +39,6 @@ const SingleProduct = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
 
- 
-
   console.log('id at single page', id);
   // const data=useSelector((store)=> store.productReducer.data)
   // const singleData=data.find((singleData)=>singleData.id === parseInt(id));
@@ -54,39 +51,40 @@ const SingleProduct = () => {
     dispatch(singleProductfunc(id));
   }, []);
 
-  useEffect(()=>{
-    window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
-  },[])
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+  }, []);
 
   return (
-       <>
-            <Box
-      display={['block', 'block', 'block', 'flex']}
-      width={'100%'}
-      paddingTop={'50px'}
-    >
-      <Box width={['100%']}>
-        <NewLeft spData={spData} />
-      </Box>
+    <>
+      <Box
+        display={['block', 'block', 'block', 'flex']}
+        width={'100%'}
+        paddingTop={'50px'}
+      >
+        <Box width={['100%']}>
+          <NewLeft spData={spData} />
+        </Box>
 
-      <div
-        style={{
-          width: '5px',
-          height: 'full',
-          backgroundColor: 'orange',
-          margin: '5% 0 5% 0',
-          opacity: '40%',
-        }}
-      />
+        <div
+          style={{
+            width: '5px',
+            height: 'full',
+            backgroundColor: 'orange',
+            margin: '5% 0 5% 0',
+            opacity: '40%',
+          }}
+        />
 
-      <Box width={['100%']}>
-        {' '}
-        <NewRight spData={spData} />
+        <Box width={['100%']}>
+          {' '}
+          <NewRight spData={spData} />
+        </Box>
       </Box>
-  
-    </Box>
-    <Footer />
-       </>
+      
+      <CommentBox />
+      <Footer />
+    </>
   );
 };
 

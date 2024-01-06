@@ -13,15 +13,3 @@ export const signup = (userData) => (dispatch) => {
             dispatch({ type: REGISTER_USER_FAILURE });
         })
 }
-
-// export const loginData = (dispatch) => {
-//     dispatch({ type: LOGIN_USER })
-//     axios.get('http://localhost:8080/user')
-//         .then(res => {
-//             dispatch({ type: LOGIN_USER_SUCCESSFUL, payload: res.data });
-//             console.log(res);
-//         })
-//         .catch(err => {
-//             dispatch({ type: LOGIN_USER_FAILURE });
-//         })
-// }

@@ -12,6 +12,7 @@ import { ProductCard } from '../component/ProductComponent/ProductCard'
 import ProductPage from './ProductPage'
 import { NavLink, useNavigate } from 'react-router-dom'
 import Footer from '../component/HomeComponent/Footer'
+import ChatBox from '../component/chatbot/chatbot'
 
 const HomePage = () => {
   const text = useColorModeValue('light','dark')
@@ -29,12 +30,6 @@ const HomePage = () => {
       {/* Top Main Image Section here  */}
       <Box w="100%">
         <Box position={'relative'} w="100%" h='100vh' bgImg={home} bgRepeat={'no-repeat'} bgSize={'cover'} bgPosition={'center'} display={{ base: 'none', md: 'none', lg: 'block' }}>
-         <Flex pos={'absolute'} left={'50px'} top={'150px'} direction={'column'} gap="20px" color={'blackAlpha.900'}>
-         <Heading fontSize={'50px'} color={'yellow'}>Mua sắm cùng tôi</Heading>
-          <Heading color={'yellow'}>Trải nghiệm mới</Heading>
-          <Heading fontSize={'40px'} letterSpacing={'5px'} color={'yellow'}>Giá cả tốt</Heading>
-          <NavLink to="/products"><Button variant={'outline'} borderRadius={'20px'} border={'1px solid yellow'} w='200px' color={'yellow'}>Mua ngay</Button></NavLink>
-         </Flex>
         </Box>
        <Box w="100%" display={{ base: 'block', md: 'block', lg: 'none' }}  >
        <DemoCarousel />
@@ -46,9 +41,11 @@ const HomePage = () => {
       
       {/* all services section here which is provided by the company  */}
       <HomeService />
+
+      <ChatBox />
       <Footer />
     </Box>
   )
 }
 
-export default HomePage
+export default HomePage;

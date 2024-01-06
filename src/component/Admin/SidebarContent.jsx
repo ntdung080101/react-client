@@ -9,7 +9,7 @@ import {
 import { useDispatch } from 'react-redux';
 import { Admin, Dash, Product, User } from '../../redux/Admin/actionType';
 import { NavLink } from 'react-router-dom';
-import logo from '../../Assets/techcube.png'
+import logo from '../../Assets/logo.png'
 
 
 const SidebarContent = ({ onClose, ...rest }) => {

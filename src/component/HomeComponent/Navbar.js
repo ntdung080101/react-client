@@ -1,4 +1,3 @@
-
 import {
   Box,
   Flex,
@@ -35,13 +34,18 @@ import {
   SearchIcon,
 } from '@chakra-ui/icons';
 import { IconContext } from 'react-icons';
-import { FaHome, FaSearch, FaShoppingBag, FaUser } from 'react-icons/fa';
+import {
+  FaHome,
+  FaSearch,
+  FaShoppingBag,
+  FaShoppingBasket,
+  FaUser,
+} from 'react-icons/fa';
 
 import { NavLink, useNavigate } from 'react-router-dom';
-import logo1 from '../../Assets/techCubeLogo.png';
 
 import { NAV_ITEMS } from './navComponent/NavItem';
-import logo from '../../Assets/techcube.png';
+import logo from '../../Assets/logo.png';
 import { ColorModeSwitcher } from '../../ColorModeSwitcher';
 import { useContext, useEffect, useState } from 'react';
 import UserProfile from './UserProfile';
@@ -68,8 +72,6 @@ export default function Navbar() {
   const user = JSON.parse(localStorage.getItem('user')) || {};
   const cartData = useSelector(store => store.cartReducer.cart);
 
-
-
   // let {id} = useRef()
   var id;
 
@@ -82,7 +84,7 @@ export default function Navbar() {
 
   useEffect(() => {
     dispatch(getCartServerdata());
-  }, [])
+  }, []);
 
   const handleSearch = val => {
     // console.log(val)
@@ -93,19 +95,25 @@ export default function Navbar() {
       setStatus(true);
     }
 
-    dispatch({ type: PRODUCT_REQUEST })
+    dispatch({ type: PRODUCT_REQUEST });
 
     axios
-      .get(`https://viridian-confusion-henley.glitch.me/products?q=${val}&_limit=20`)
+      .get(
+        `https://viridian-confusion-henley.glitch.me/products?q=${val}&_limit=20`
+      )
       .then(res => {
-        dispatch({ type: GET_PRODUCT_SUCCESS, payload: res.data, totalProducts: +(res.headers['x-total-count']) });
+        dispatch({
+          type: GET_PRODUCT_SUCCESS,
+          payload: res.data,
+          totalProducts: +res.headers['x-total-count'],
+        });
       })
       .catch(err => {
         dispatch({ type: PRODUCT_FAILURE });
       });
   };
 
-  const handleDebounce = (val) => {
+  const handleDebounce = val => {
     if (id) clearTimeout(id);
     id = setTimeout(() => {
       handleSearch(val);
@@ -125,14 +133,13 @@ export default function Navbar() {
       top={'0px'}
       w="100%"
       zIndex={99}
-      borderBottom={'1px solid white'}
+      borderBottom={'1px solid grey'}
       boxShadow={'rgba(0, 0, 0, 0.24) 0px 3px 8px'}
     >
-
       <Flex
         pos={'relative'}
-        bg={useColorModeValue('white', 'gray.800')}
-        color={useColorModeValue('gray.600', 'white')}
+        bg={useColorModeValue('#cc3a3a', 'gray.800')}
+        color={useColorModeValue('black', 'white')}
         minH={'70px'}
         py={{ base: 2 }}
         px={{ base: 4, md: 6 }}
@@ -171,7 +178,9 @@ export default function Navbar() {
         >
           {/* logo section here  */}
           <NavLink to="/">
-            <Box onClick={() => setStatus(false)}><Image src={logo} w="120px" /></Box>
+            <Box onClick={() => setStatus(false)}>
+              <Image src={logo} w="120px" backgroundColor={'white'}/>
+            </Box>
           </NavLink>
 
           <Flex
@@ -185,14 +194,17 @@ export default function Navbar() {
 
         {/* search input  */}
         <InputGroup
-          w="300px"
-          mr="100px"
+          w="500px"
+          mr="250px"
           borderRadius={'30px'}
+          color={'white'}
           display={{ base: 'none', md: 'none', lg: 'block' }}
         >
           <Input
             pr="4.5rem"
             placeholder="search"
+            bgColor={'white'}
+            color={useColorModeValue('black', 'white')}
             onChange={e => handleDebounce(e.target.value)}
           />
           <InputRightElement width="4.5rem">
@@ -207,20 +219,31 @@ export default function Navbar() {
           display={{ base: 'none', md: 'flex' }}
           justifyContent={'space-evenly'}
         >
-
-
           <Menu>
-
             <MenuList>
-              {auth ? <MenuItem>Hello {user.firstName} {user.lastName}</MenuItem> :
-                <NavLink to='/signup'><MenuItem>{'login / signup'}</MenuItem></NavLink>
-              }
+              {auth ? (
+                <MenuItem>
+                  Hello {user.firstName} {user.lastName}
+                </MenuItem>
+              ) : (
+                <NavLink to="/signup">
+                  <MenuItem>{'login / signup'}</MenuItem>
+                </NavLink>
+              )}
             </MenuList>
           </Menu>
           <Menu>
             <MenuButton>
-
-              {auth ? <Avatar w={'35px'} h={'35px'} src={user.pic} name={`${user.firstName} ${user.lastName}`} /> : <FaUser size={'20px'} />}
+              {auth ? (
+                <Avatar
+                  w={'35px'}
+                  h={'35px'}
+                  src={user.pic}
+                  name={`${user.firstName} ${user.lastName}`}
+                />
+              ) : (
+                <FaUser size={'20px'} />
+              )}
               {/* {auth ? user.firstName : <FaUser size={'20px'} />} */}
             </MenuButton>
             <MenuList>
@@ -237,13 +260,13 @@ export default function Navbar() {
               <MenuItem>
                 <UserProfile data={user}>User Profile</UserProfile>
               </MenuItem>
-              <MenuItem isDisabled={!auth} onClick={handleLogout}>LogOut</MenuItem>
-              <NavLink to='/adminlogin'> <MenuItem>Admin</MenuItem></NavLink>
-
+              <MenuItem isDisabled={!auth} onClick={handleLogout}>
+                LogOut
+              </MenuItem>
             </MenuList>
           </Menu>
           <Box position={'relative'}>
-            {cartData.length > 0 && auth &&
+            {cartData.length > 0 && auth && (
               <Flex
                 w={'22px'}
                 h={'22px'}
@@ -255,10 +278,17 @@ export default function Navbar() {
                 color={text === 'dark' ? 'white' : 'black'}
                 justifyContent={'center'}
                 alignItems={'center'}
-              >{cartData.length}</Flex>
-            }
+              >
+                {cartData.length}
+              </Flex>
+            )}
             <NavLink to="/cart">
               <FaShoppingBag size={'22px'} />
+            </NavLink>
+          </Box>
+          <Box position={'relative'}>
+            <NavLink to="/purchase">
+              <FaShoppingBasket size={'22px'} />
             </NavLink>
           </Box>
           <ColorModeSwitcher />
@@ -277,10 +307,8 @@ export default function Navbar() {
         bg={textColor}
         py="6px"
         borderRadius={'10px'}
-        boxShadow={'rgba(0, 0, 0, 0.24) 0px 3px 8px'}      >
-
-
-
+        boxShadow={'rgba(0, 0, 0, 0.24) 0px 3px 8px'}
+      >
         {/* BOTTOM NAVBAR  */}
         <IconContext.Provider value={{ size: '25px' }}>
           <Flex justifyContent={'space-around'}>
@@ -292,17 +320,30 @@ export default function Navbar() {
             </Box>
             {/* <NavLink to='/adminlogin'> <FaUser /></NavLink> */}
             <Menu>
-
               <MenuList>
-                {auth ? <MenuItem>Hello {user.firstName} {user.lastName}</MenuItem> :
-                  <NavLink to='/signup'><MenuItem>{'login / signup'}</MenuItem></NavLink>
-                }
+                {auth ? (
+                  <MenuItem>
+                    Hello {user.firstName} {user.lastName}
+                  </MenuItem>
+                ) : (
+                  <NavLink to="/signup">
+                    <MenuItem>{'login / signup'}</MenuItem>
+                  </NavLink>
+                )}
               </MenuList>
             </Menu>
             <Menu>
               <MenuButton>
-
-                {auth ? <Avatar w={'35px'} h={'35px'} src={user.pic} name={`${user.firstName} ${user.lastName}`} /> : <FaUser size={'20px'} />}
+                {auth ? (
+                  <Avatar
+                    w={'35px'}
+                    h={'35px'}
+                    src={user.pic}
+                    name={`${user.firstName} ${user.lastName}`}
+                  />
+                ) : (
+                  <FaUser size={'20px'} />
+                )}
                 {/* {auth ? user.firstName : <FaUser size={'20px'} />} */}
               </MenuButton>
               <MenuList>
@@ -319,9 +360,13 @@ export default function Navbar() {
                 <MenuItem>
                   <UserProfile data={user}>User Profile</UserProfile>
                 </MenuItem>
-                <MenuItem isDisabled={!auth} onClick={handleLogout}>LogOut</MenuItem>
-                <NavLink to='/adminlogin'> <MenuItem>Admin</MenuItem></NavLink>
-
+                <MenuItem isDisabled={!auth} onClick={handleLogout}>
+                  LogOut
+                </MenuItem>
+                <NavLink to="/adminlogin">
+                  {' '}
+                  <MenuItem>Admin</MenuItem>
+                </NavLink>
               </MenuList>
             </Menu>
 
@@ -349,7 +394,8 @@ export default function Navbar() {
             bg="white"
             color="black"
             placeholder="search...."
-            onChange={e => handleDebounce(e.target.value)} />
+            onChange={e => handleDebounce(e.target.value)}
+          />
           <InputRightElement width="4.5rem">
             <CloseIcon
               color="black"
@@ -365,18 +411,18 @@ export default function Navbar() {
 }
 
 const DesktopNav = () => {
-  const linkColor = useColorModeValue('gray.600', 'gray.200');
-  const linkHoverColor = useColorModeValue('gray.800', 'white');
+  const linkColor = useColorModeValue('white', 'gray.200');
+  const linkHoverColor = useColorModeValue('black', 'white');
   const popoverContentBgColor = useColorModeValue('white', 'gray.800');
 
   return (
-    <Flex direction={'row'} gap={4} alignItems={'center'}>
+    <Flex direction={'row'} alignItems={'center'} mt={'40px'}>
       {NAV_ITEMS.map(navItem => (
         <Box key={navItem.label}>
           <Popover trigger={'hover'} placement={'bottom-start'}>
             <PopoverTrigger display="flex" alignItems="center">
-              {
-                navItem.href ? <NavLink to={navItem.href}>
+              {navItem.href ? (
+                <NavLink to={navItem.href}>
                   <Link
                     p={2}
                     fontSize={'15px'}
@@ -390,21 +436,22 @@ const DesktopNav = () => {
                     {navItem.label}
                     {navItem.children ? <ChevronDownIcon w={5} h={5} /> : ''}
                   </Link>
-                </NavLink>:<Link
-                p={2}
-                fontSize={'15px'}
-                fontWeight={'bold'}
-                color={linkColor}
-                _hover={{
-                  textDecoration: 'none',
-                  color: linkHoverColor,
-                }}
-              >
-                {navItem.label}
-                {navItem.children ? <ChevronDownIcon w={5} h={5} /> : ''}
-              </Link>
-              }
-
+                </NavLink>
+              ) : (
+                <Link
+                  p={2}
+                  fontSize={'15px'}
+                  fontWeight={'bold'}
+                  color={linkColor}
+                  _hover={{
+                    textDecoration: 'none',
+                    color: linkHoverColor,
+                  }}
+                >
+                  {navItem.label}
+                  {navItem.children ? <ChevronDownIcon w={5} h={5} /> : ''}
+                </Link>
+              )}
             </PopoverTrigger>
 
             {navItem.children && (
@@ -414,6 +461,7 @@ const DesktopNav = () => {
                 bg={popoverContentBgColor}
                 p={4}
                 rounded={'xl'}
+                color={linkHoverColor}
                 w="auto"
               >
                 <Grid templateColumns={'repeat(2,1fr)'} gap="30px" p="10px">

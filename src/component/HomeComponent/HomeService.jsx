@@ -6,7 +6,6 @@ const data =[
     {image:'https://uploads-ssl.webflow.com/63e857eaeaf853471d5335ff/63e8c4e55b939fea169c0292_faq-min.png',text:'Cập nhật thường xuyên'},
     {image:'https://uploads-ssl.webflow.com/63e857eaeaf853471d5335ff/63e8c4e6707380718425e697_onlie%20payment-min.png',text:'Thanh toán tiện lợi, an toàn'},
     {image:'https://uploads-ssl.webflow.com/63e857eaeaf853471d5335ff/63e8c4e544663ba3d0fd2bb8_home%20delivery-min.png',text:'Dịch vụ vận chuyển nhanh chống'}
-
 ]
 
 const HomeService = () => {
