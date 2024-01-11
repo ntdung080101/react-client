@@ -64,35 +64,35 @@ const SingleProduct = () => {
   }, []);
 
   return (
-    <>
-      <Box
-        display={['block', 'block', 'block', 'flex']}
-        width={'100%'}
-        paddingTop={'50px'}
-      >
-        <Box width={['100%']}>
-          <NewLeft spData={spData} />
-        </Box>
-
-        <div
-          style={{
-            width: '5px',
-            height: 'full',
-            backgroundColor: 'orange',
-            margin: '5% 0 5% 0',
-            opacity: '40%',
-          }}
-        />
-
-        <Box width={['100%']}>
-          {' '}
-          <NewRight spData={spData} />
-        </Box>
+    spData===null? <></>:<>
+    <Box
+      display={['block', 'block', 'block', 'flex']}
+      width={'100%'}
+      paddingTop={'50px'}
+    >
+      <Box width={['100%']}>
+        <NewLeft spData={spData} />
       </Box>
-      
-      <CommentBox />
-      <Footer />
-    </>
+
+      <div
+        style={{
+          width: '5px',
+          height: 'full',
+          backgroundColor: 'orange',
+          margin: '5% 0 5% 0',
+          opacity: '40%',
+        }}
+      />
+
+      <Box width={['100%']}>
+        {' '}
+        <NewRight spData={spData} />
+      </Box>
+    </Box>
+    
+    <CommentBox />
+    <Footer />
+  </>
   );
 };
 
