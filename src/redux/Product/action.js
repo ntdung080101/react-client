@@ -20,8 +20,8 @@ export const getProducts = (paramObj, page) => dispatch => {
     .then(res => {
       dispatch({
         type: GET_PRODUCT_SUCCESS,
-        payload: res.data.message,
-        totalProducts: 1//res.headers['x-total-count'],
+        payload: res.data.message.data,
+        totalProducts: res.data.message.total,
       });
     })
     .catch(err => {

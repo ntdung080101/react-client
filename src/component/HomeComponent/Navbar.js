@@ -123,6 +123,9 @@ export default function Navbar() {
 
   const handleLogout = () => {
     localStorage.setItem('auth', JSON.stringify(false));
+    localStorage.removeItem('user');
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('cart');
     navigate('/login');
   };
 

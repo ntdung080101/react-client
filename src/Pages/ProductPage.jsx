@@ -16,7 +16,6 @@ const ProductPage = () => {
   const { products, totalProducts } = useSelector(
     store => store.productReducer
   );
-  console.log(totalProducts)
   const [page, setPage] = useState(1);
 
   let obj = {

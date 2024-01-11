@@ -40,6 +40,7 @@ const SingleProduct = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const [spData, setSpData] = useState(null);
+  const [comment, setComment] = useState([]);
 
   useEffect(() => {
     axios.get('product/get',{
@@ -50,6 +51,22 @@ const SingleProduct = () => {
     .then(result=>{
       console.log(result.data.message)
       setSpData(result.data.message)
+    })
+    .catch(error=>{
+      console.log(error);
+      alert('sản phẩm đã hết!');
+
+      navigator('/',3000);
+    })
+
+    axios.get('comment/list-all',{
+      params: {
+        productCode: id
+      }
+    })
+    .then(result=>{
+      console.log(result.data.message)
+      setComment(result.data.message)
     })
     .catch(error=>{
       console.log(error);
@@ -90,7 +107,7 @@ const SingleProduct = () => {
       </Box>
     </Box>
     
-    <CommentBox />
+    {localStorage.getItem('user')? <CommentBox comments={comment} productId={id} />:<></>}
     <Footer />
   </>
   );

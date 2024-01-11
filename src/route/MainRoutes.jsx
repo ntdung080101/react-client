@@ -43,7 +43,7 @@ const MainRoutes = () => {
         }
       />
       <Route
-        path="/purchase"
+        path="/purchase/:status"
         element={
           <Private>
             <PurchasePage />

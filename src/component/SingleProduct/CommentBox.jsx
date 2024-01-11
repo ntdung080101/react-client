@@ -1,16 +1,33 @@
 import { Box, Center, Input, InputGroup, InputRightElement, Text } from "@chakra-ui/react";
 import Comment from "./Comment";
 import { ArrowForwardIcon, ArrowRightIcon } from "@chakra-ui/icons";
+import axios from '../../utils/axios';
+import { useState } from "react";
 
-const CommentBox = () =>{
+const CommentBox = (props) =>{
+    const [comment,setComment] = useState('');
+
+    const sendComment = () => {
+        axios.post('comment/create',{
+            productCode: props.productId,
+            rely: null,
+            content: comment
+        })
+        .then(result=>{
+            console.log(result.data);
+        })
+        .catch(error=>{
+            console.log(error)
+        })
+    }
+
     return <>
         <Center >
             <Box bg='white' w='80%' p={4} color='black'>
                 <Text fontSize={'2xl'} mb={'10px'}> Đánh giá sản phẩm</Text>
-                <Comment comment="Sản phẩm rất tốt" stat={5} time="10:05 28/12/2023" name="Lý cao"/>
-                <Comment comment="Dùng khá ok" stat={4} time="17:05 28/12/2023" name="Nguyễn Tuấn"/>
-                <Comment comment="Sản phẩm dùng ổn" stat={4} time="14:05 29/12/2023" name="Lê Nam"/>
-                <Comment comment="Trải nghiệm tốt" stat={5} time="17:05 30/12/2023" name="Đạt"/>
+                {props.comments.map(el=>{
+                    return <Comment avatar={el.khach_hang.hinh_anh} comment={el.noi_dung} stat={5} time={el.thoi_gian.slice(0,10)} name={el.khach_hang.ten} />
+                })}
 
                 {/* search input  */}
                 <InputGroup
@@ -21,9 +38,11 @@ const CommentBox = () =>{
                 <Input
                     pr="4.5rem"
                     placeholder="Bình luận"
+                    value={comment}
+                    onChange={e=>setComment(e.target.value)}
                 />
                 <InputRightElement width="4.5rem">
-                    <ArrowForwardIcon />
+                    <ArrowForwardIcon cursor={'pointer'} onClick={sendComment}/>
                 </InputRightElement>
                 </InputGroup>
             </Box>

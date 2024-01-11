@@ -72,6 +72,7 @@ const CartPage = () => {
     .then(result=>{
       console.log(result.data)
       localStorage.setItem('cart','[]')
+      navigator('/purchase')
     })
     .catch(error=>{
       console.log(error);

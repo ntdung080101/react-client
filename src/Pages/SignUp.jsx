@@ -109,6 +109,8 @@ export default function SignUp() {
             position: 'top',
             isClosable: true,
           })
+
+          navigator('/login')
         }
       })
     }
