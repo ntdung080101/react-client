@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, useNavigate, NavLink } from 'react-router-dom';
 import { getCartServerdata } from '../redux/CartReducer/action';
 import Footer from '../component/HomeComponent/Footer';
+import { SERVER_URL } from '../constraint';
 
 
 const CheckOut = () => {
@@ -79,18 +80,21 @@ const CheckOut = () => {
             </Alert> :
               data.map(el => {
                 return <Flex alignItems={'center'} mt={'30px'} justifyContent={'space-between'}>
-                  <Image w={'150px'} src={el.image[0]} alt='product' />
+                  <Image w={'150px'} src={`${SERVER_URL}${el.imagePath[0]}`} alt='product' />
                   <Box>
-                    <Heading as='h3' size={'md'}>{el.title.substring(0, 15)}...</Heading>
-                    <Text>{el.category}</Text>
+                    <Heading as='h3' size={'md'}>{el.ten.substring(0, 15)}...</Heading>
+                    <Text>{el.loai}</Text>
                   </Box>
                   <Box>
-                    <Heading as='h3' size={'md'}>{el.price} {'00 VNĐ'}</Heading>
-                    <Text>Giảm giá : {el.discount}%</Text>
+                    <Heading as='h3' size={'md'}>{el.gia} {' VNĐ'}</Heading>
                   </Box>
                 </Flex>
               })}
           </Box>
+
+
+
+
           <Box m={'30px 0 0px 0'} boxShadow='rgba(0, 0, 0, 0.24) 0px 3px 8px' p={'20px'} borderRadius={'10px'} bgColor={useColorModeValue('white', 'gray.800')}>
             <Flex mb={'17px'} justifyContent={'space-between'}>
               <Heading as={'h2'} fontSize={'23px'}>Thông tin vận chuyển</Heading>
@@ -195,7 +199,7 @@ export const CheckoutPrice = ({ text }) => {
   const promo = JSON.parse(localStorage.getItem('promo')) || ''
 
   data.forEach(el => {
-    cartPrice += el.price * el.quantity;
+    cartPrice += el.gia * el.quantity;
   })
 
   useEffect(() => {
@@ -222,10 +226,6 @@ export const CheckoutPrice = ({ text }) => {
         <Text>Giá</Text>
         <Text>{(cartPrice)} {' VNĐ'}</Text>
       </Flex>
-      <Flex justifyContent={'space-between'}>
-        <Text>Vận chuyển</Text>
-        <Text>{cartPrice > 500 ? 'FREE' : cartPrice === 0 ? `₹ ${0}` : `₹ ${40}`}</Text>
-      </Flex>
     </Box>
     <Box m={'10px 0'} h={'3px'} color={'gray.600'}>
       <Divider orientation='horizontal'></Divider>
@@ -233,7 +233,7 @@ export const CheckoutPrice = ({ text }) => {
     <Box>
       <Flex justifyContent={'space-between'}>
         <Heading size={'md'}>Tổng</Heading>
-        <Heading size={'md'}>{promoCodeStatus ? (cartPrice + cartPrice * 0.18 - cartPrice * 0.1).toFixed(2) : (cartPrice + cartPrice * 0.18).toFixed(2)} {' VNĐ'}</Heading>
+        <Heading size={'md'}>{(cartPrice).toFixed(2)} {' VNĐ'}</Heading>
       </Flex>
     </Box>
     <Box m={'10px 0'} h={'3px'} color={'gray.600'}>

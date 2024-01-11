@@ -6,11 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCartData, getCartServerdata, } from '../redux/CartReducer/action';
 import CartItem from '../component/CartComponet/CartItem';
 
-import { Link } from 'react-router-dom';
 import emptyCartGif from '../Assets/emptyCartImg2.gif';
 import { SearchContext } from '../context/SearchContextProvider';
 import ProductPage from './ProductPage';
 import Footer from '../component/HomeComponent/Footer';
+import axios from '../utils/axios';
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -24,11 +24,13 @@ const CartPage = () => {
   let { cart } = useSelector(store => store.cartReducer);
   const promoCode = 'GETFIRSTBUY10';
   const [toggle, setToggle] = useState(false);
+  let id = JSON.parse(localStorage.getItem('userId')) || '';
+  const user = JSON.parse(localStorage.getItem('user')) || '';
 
   let totalPrice = 0;
   // let val = 0;
   cart.forEach((cartItem) => {
-    totalPrice += cartItem.price * cartItem.quantity;
+    totalPrice += cartItem.gia * cartItem.quantity;
   })
 
   useEffect(()=>{
@@ -36,7 +38,6 @@ const CartPage = () => {
   },[])
 
   useEffect(() => {
-    dispatch(getCartServerdata());
     dispatch(getCartData());
   }, []);
 
@@ -48,6 +49,7 @@ const CartPage = () => {
       setPromoStatus(true);
     }
   }
+  
   const text = useColorModeValue('black', 'dark');
   const bg = useColorModeValue('white', 'gray.800');
 
@@ -56,6 +58,24 @@ const CartPage = () => {
     localStorage.setItem('promo', JSON.stringify(''));
     setAppliedPromo(false);
     setPromoStatus(false);
+  }
+
+  const createOrder = () =>{
+
+    axios.post('order/create',{
+      customerCode: id,
+      name: user['name'],
+      phoneNumber: user['phoneNumber'],
+      discount: 0,
+      address: user['address']
+    })
+    .then(result=>{
+      console.log(result.data)
+      localStorage.setItem('cart','[]')
+    })
+    .catch(error=>{
+      console.log(error);
+    })
   }
 
 
@@ -86,7 +106,7 @@ const CartPage = () => {
 
           <Box display={"flex"} justifyContent={"space-between"} margin={"20px"}>
             <Text color={text}>Tổng sản phẩm</Text>
-            <Text color={text}> {'24580000'} {' VNĐ'}</Text>
+            <Text color={text}> {totalPrice} {' VNĐ'}</Text>
           </Box>
 
           <Box display={"flex"} justifyContent={"space-between"} margin={"20px"}>
@@ -96,11 +116,10 @@ const CartPage = () => {
 
           <Box display={"flex"} justifyContent={"space-between"} margin={"20px"}>
             <Text color={text}>Tổng tiền</Text>
-            <Text color={text}> {'24580000 VNĐ'}</Text>
+            <Text color={text}> {totalPrice + ' VNĐ'}</Text>
           </Box>
 
-          <Link to="/checkout"><Button _hover={'gray.500'} display={'block'} margin={"auto"} width={"100%"} bgColor={"blackAlpha.900"} color={"white"}>Đặt hàng</Button>
-          </Link>
+          <Button _hover={'gray.500'} display={'block'} margin={"auto"} width={"100%"} bgColor={"blackAlpha.900"} color={"white"} onClick={createOrder}>Đặt hàng</Button>
         </Box>
 
       </Box>
@@ -117,19 +136,15 @@ export default CartPage;// nothing here yet
 export const CartList = () => {
 
   const { cart } = useSelector(store => store.cartReducer);
-
-
-
-
-
   return (
 
     <Box mr={'50px'} maxH={'400px'} overflowY={'scroll'} className="cart-list-container"  >
 
       {cart.length > 0 && cart.map((el) => {
-        return <CartItem key={el.id} {...el} />
+        const product = el;
+        return <CartItem key={product.ma} {...product} />
       })}
 
-</Box>
+    </Box>
 );
 };

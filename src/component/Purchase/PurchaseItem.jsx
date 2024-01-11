@@ -1,10 +1,11 @@
 import { Box, Divider, Flex, Image, Select, Text } from "@chakra-ui/react";
+import { SERVER_URL } from "../../constraint";
 
-const PurchaseItem = ({  id,
-    title,
-    brand,
-    image,
-    price,
+const PurchaseItem = ({  ma,
+    ten,
+    loai,
+    imagePath,
+    gia,
     color,
     quantity,}) => {
 
@@ -14,10 +15,10 @@ const PurchaseItem = ({  id,
         <Box display={'flex'} flexDirection={{ base: "column", md: "row" }} alignItems={'center'} justifyContent={{ base: 'center', md: "space-between" }} gap={'20px'}>
 
         <Flex justifyContent={{base:'space-between'}} gap={{base:'30px'}}>
-        <Image width={{ base: "160px", sm: '200px', md: '100px', lg: '150px', xl: '200px' }} src={image} alt={title} />
+        <Image width={{ base: "160px", sm: '200px', md: '100px', lg: '150px', xl: '200px' }} src={`${SERVER_URL}${imagePath[0]}`} alt={ten} />
         <Box className='TitleColorBrand' display={'flex'} flexDirection={'column'} justifyContent={'center'}>
-            <Text fontWeight={'bold'} fontSize={'20px'}>{title.substring(0,15)}...</Text>
-            <Text fontWeight={'bold'} color={'orange.400'}>Hiệu: {brand}</Text>
+            <Text fontWeight={'bold'} fontSize={'20px'}>{ten.substring(0,15)}...</Text>
+            <Text fontWeight={'bold'} color={'orange.400'}>Hiệu: {loai}</Text>
             <Text fontWeight={'bold'} fontSize={'9px'}>Ngày mua: {'15/11/2023'}</Text>
         </Box>
         </Flex>
@@ -25,7 +26,7 @@ const PurchaseItem = ({  id,
         <Box display={'block'} flexDirection={'row'} justifyContent={'center'} gap={'20px'} alignItems={'center'}>
 
 
-            <Text fontWeight={'bold'} fontSize={'15px'}>{'16.000.000'} {' VNĐ'}</Text>
+            <Text fontWeight={'bold'} fontSize={'15px'}>{gia} {' VNĐ'}</Text>
         </Box>
 
         </Box>

@@ -21,7 +21,7 @@ const NewRight = ({ spData }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const roundedRating = Math.round(spData.rating);
+  // const roundedRating = Math.round(spData.rating);
 
   const handleAddToCart = () => {
     dispatch(postSingleProductItem({...spData,quantity:1})).then(res => navigate('/cart'));
@@ -52,7 +52,7 @@ const NewRight = ({ spData }) => {
         >
           {spData.description}
         </Text>
-        <Box display={'flex'} fontSize={'10px'}>
+        {/* <Box display={'flex'} fontSize={'10px'}>
           {Array.from({ length: 5 }).map((_, index) => {
             const isFilled = index < roundedRating;
             return isFilled ? (
@@ -61,7 +61,7 @@ const NewRight = ({ spData }) => {
               <FaRegStar key={index} color="gray" />
             );
           })}
-        </Box>
+        </Box> */}
       </Box>
 
       <Box paddingY={'1%'}>
@@ -74,28 +74,11 @@ const NewRight = ({ spData }) => {
               </Text>{' '}
             </Text>
           </Box>
-          <Box
-            backgroundPosition="center"
-            backgroundSize="cover"
-            backgroundRepeat="no-repeat"
-            height="40px"
-            width="150px"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Heading size="lg" fontWeight="bold">
-              {spData.discount}%
-            </Heading>
-            <Text color={'black'} fontWeight={'bold'} paddingLeft={'4px'}>
-              Sale
-            </Text>
-          </Box>
         </Box>
         <Box fontWeight={'5px'}>
           <Heading display={'flex'}>
-            {spData.price}
-            <Heading paddingRight={'2px'}>{'00 VNĐ'}</Heading>
+            {spData.gia}
+            <Heading paddingRight={'2px'}>{spData.gia}{' VNĐ'}</Heading>
           </Heading>
         </Box>
       </Box>
@@ -109,8 +92,8 @@ const NewRight = ({ spData }) => {
           fontSize={'md'}
           opacity={'70%'}
         >
-          <Text>Loại sản phẩm:{spData.category}</Text>
-          <Text>Thông tin:{spData.tag_badge}</Text>
+          <Text>Loại sản phẩm:{ ' ' + spData.loai}</Text>
+          <Text>Thông tin:{spData.mo_ta}</Text>
         </Box>
       </Box>
 
@@ -125,17 +108,6 @@ const NewRight = ({ spData }) => {
           colorScheme='white'
         >
           Thêm vào giỏ
-        </Button>
-        <Button
-          onClick={handleBuySingleProduct}
-          backgroundColor={'black'}
-          textColor={'white'}
-          fontSize={'17px'}
-          width={'250px'}
-          border={'2px solid black'}
-          colorScheme='white'
-        >
-          Mua Ngày
         </Button>
       </Box>
     </Box>

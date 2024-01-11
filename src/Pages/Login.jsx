@@ -17,13 +17,13 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import loginImg from '../Assets/loginImg.avif';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { LOGIN_USER, LOGIN_USER_FAILURE, LOGIN_USER_SUCCESSFUL } from '../redux/Authentication/actionType';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { loginData } from '../redux/Authentication/action';
 import Loader from '../component/Loader&Error/Loader';
 import Footer from '../component/HomeComponent/Footer';
+import axios from '../utils/axios';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -42,14 +42,6 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let data = await axios('https://viridian-confusion-henley.glitch.me/user').then(res => {
-      return res.data
-    });
-
-    data.pic ='https://bloganchoi.com/wp-content/uploads/2022/02/avatar-trang-y-nghia.jpeg';
-    data.lastName = 'John';
-    data.firstName = 'Leo';
-
     if (!email || !password) {
       toast({
         title: 'Không thành công',
@@ -61,50 +53,104 @@ const Login = () => {
       })
       return;
     }
-    const newData = data.find(el => el.email === email);
-    // console.log(newData, data)
-    if (newData) {
-      if (newData.password === password) {
-        toast({
-          title: 'Đăng nhập thành công!',
-          description: "Redirecting to Home Page.",
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
-          position: 'top'
-        })
-        newData.pic ='https://bloganchoi.com/wp-content/uploads/2022/02/avatar-trang-y-nghia.jpeg';
-        newData.lastName = 'John';
-        newData.firstName = 'Leo';
-        localStorage.setItem('userId', JSON.stringify(newData.id))
+
+    axios.post('auth/login-customer',{
+      userName: email,
+      password,
+    })
+    .then(result=>{
+      localStorage.setItem('authToken',result.data.message.token);
+      const customerCode = result.data.message.id;
+      toast({
+        title: 'Đăng nhập thành công!',
+        description: "Redirecting to Home Page.",
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+        position: 'top'
+      })
+
+      axios.get('customer/get',{
+        params: {
+          code: customerCode,
+        }
+      })
+      .then(res=>{
+        const data = res.data.message;
+
+        console.log(res.data)
+        localStorage.setItem('userId', JSON.stringify(data.ma))
         localStorage.setItem('auth', JSON.stringify(true));
-        localStorage.setItem('user', JSON.stringify(newData));
+        localStorage.setItem('user', JSON.stringify({
+          id: data.id,
+          address: data.dia_chi,
+          image: data.hinh_anh,
+          phoneNumber: data.so_dien_thoai,
+          name: data.ten
+        }));
+
         setTimeout(() => {
           navigate('/');
         }, 3000)
-        return;
-      } else {
+      })
+      .catch(err=>{
         toast({
           title: 'Đăng nhập thất bại',
-          description: "Sai mật khẩu",
+          description: "Tài khoản không tồn tại hoặc sai mật khẩu",
           status: 'warning',
           duration: 3000,
           isClosable: true,
           position: 'top'
         })
-        return;
-      }
-    } else {
-      toast({
-        title: 'Sai chứng thực',
-        description: "Make Sure you are registered.",
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-        position: 'top'
       })
-      return;
-    }
+      
+    })
+    .catch(error=>{
+        toast({
+          title: 'Đăng nhập thất bại',
+          description: "Tài khoản không tồn tại hoặc sai mật khẩu",
+          status: 'warning',
+          duration: 3000,
+          isClosable: true,
+          position: 'top'
+        })
+    })
+
+    // if (newData) {
+    //   if (newData.password === password) {
+
+    //     newData.pic ='https://bloganchoi.com/wp-content/uploads/2022/02/avatar-trang-y-nghia.jpeg';
+    //     newData.lastName = 'John';
+    //     newData.firstName = 'Leo';
+    //     localStorage.setItem('userId', JSON.stringify(newData.id))
+    //     localStorage.setItem('auth', JSON.stringify(true));
+    //     localStorage.setItem('user', JSON.stringify(newData));
+    //     setTimeout(() => {
+    //       navigate('/');
+    //     }, 3000)
+    //     return;
+    //   } else {
+    //     toast({
+    //       title: 'Đăng nhập thất bại',
+    //       description: "Sai mật khẩu",
+    //       status: 'warning',
+    //       duration: 3000,
+    //       isClosable: true,
+    //       position: 'top'
+    //     })
+    //     return;
+    //   }
+    // } else {
+    //   toast({
+    //     title: 'Sai chứng thực',
+    //     description: "Make Sure you are registered.",
+    //     status: 'error',
+    //     duration: 3000,
+    //     isClosable: true,
+    //     position: 'top'
+    //   })
+    //   return;
+    // }
 
   }
 

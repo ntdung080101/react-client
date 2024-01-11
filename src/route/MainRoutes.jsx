@@ -61,8 +61,6 @@ const MainRoutes = () => {
       <Route path='/paymentpopup' element={<PaymentPopup />} />
       <Route path='/map' element={<MapPage />} />
       <Route path='/paymentdetail' element={<PaymentDetail />} />
-      <Route path="/admin" element={<AdminContext><AdminPage /></AdminContext>} />
-      <Route path="/adminlogin" element={<AdminLogin />} />
       <Route path="*" element={<ErrorPage />} />
     </Routes>
   );

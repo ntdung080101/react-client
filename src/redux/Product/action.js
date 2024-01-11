@@ -1,5 +1,6 @@
 
-import axios from 'axios';
+import axios from '../../utils/axios';
+
 import {
   SINGLE_PRODUCT_SUCCESS,
   GET_PRODUCT_SUCCESS,
@@ -10,25 +11,23 @@ import {
 export const getProducts = (paramObj, page) => dispatch => {
   dispatch({ type: PRODUCT_REQUEST });
   axios
-
-    .get(`https://viridian-confusion-henley.glitch.me/products?_page=${page}&_limit=20`, paramObj)
-
+    .get('product/list',{
+      params: {
+        page,
+        limit: 20
+      }
+    })
     .then(res => {
       dispatch({
         type: GET_PRODUCT_SUCCESS,
-        payload: res.data,
-        totalProducts: res.headers['x-total-count'],
+        payload: res.data.message,
+        totalProducts: 1//res.headers['x-total-count'],
       });
-
-      // let value = res.headers['x-total-count'];
-      // console.log(value)
     })
     .catch(err => {
       dispatch({ type: PRODUCT_FAILURE });
     });
 };
-
-//https://gopi.onrender.com/products
 
 export const singleProductfunc = id => dispatch => {
   dispatch({ type: PRODUCT_REQUEST });

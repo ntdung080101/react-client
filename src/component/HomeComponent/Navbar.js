@@ -55,9 +55,9 @@ import {
   PRODUCT_FAILURE,
   PRODUCT_REQUEST,
 } from '../../redux/Product/actionType';
-import axios from 'axios';
 import { SearchContext } from '../../context/SearchContextProvider';
 import { getCartServerdata } from '../../redux/CartReducer/action';
+import axios from '../../utils/axios';
 
 export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure();
@@ -223,7 +223,7 @@ export default function Navbar() {
             <MenuList>
               {auth ? (
                 <MenuItem>
-                  Hello {user.firstName} {user.lastName}
+                  Hello {user.name}
                 </MenuItem>
               ) : (
                 <NavLink to="/signup">
@@ -239,7 +239,7 @@ export default function Navbar() {
                   w={'35px'}
                   h={'35px'}
                   src={user.pic}
-                  name={`${user.firstName} ${user.lastName}`}
+                  name={`${user.name}`}
                 />
               ) : (
                 <FaUser size={'20px'} />
@@ -249,7 +249,7 @@ export default function Navbar() {
             <MenuList>
               {auth ? (
                 <MenuItem>
-                  Hello {user.firstName} {user.lastName}
+                  Hello {user.name}
                 </MenuItem>
               ) : (
                 <NavLink to="/signup">
@@ -414,15 +414,19 @@ const DesktopNav = () => {
   const linkColor = useColorModeValue('white', 'gray.200');
   const linkHoverColor = useColorModeValue('black', 'white');
   const popoverContentBgColor = useColorModeValue('white', 'gray.800');
+  const [listCategory,setListCategory] = useState([]);
 
+  useEffect(()=>{
+    axios.get('category/list').then(result=>{
+      setListCategory(result.data.message);
+    })
+  },[]);
   return (
     <Flex direction={'row'} alignItems={'center'} mt={'40px'}>
-      {NAV_ITEMS.map(navItem => (
-        <Box key={navItem.label}>
+        <Box>
           <Popover trigger={'hover'} placement={'bottom-start'}>
             <PopoverTrigger display="flex" alignItems="center">
-              {navItem.href ? (
-                <NavLink to={navItem.href}>
+                <NavLink to={'/product'}>
                   <Link
                     p={2}
                     fontSize={'15px'}
@@ -433,57 +437,40 @@ const DesktopNav = () => {
                       color: linkHoverColor,
                     }}
                   >
-                    {navItem.label}
-                    {navItem.children ? <ChevronDownIcon w={5} h={5} /> : ''}
+                    {"Thể loại"}
+                    <ChevronDownIcon w={5} h={5} />
                   </Link>
                 </NavLink>
-              ) : (
-                <Link
-                  p={2}
-                  fontSize={'15px'}
-                  fontWeight={'bold'}
-                  color={linkColor}
-                  _hover={{
-                    textDecoration: 'none',
-                    color: linkHoverColor,
-                  }}
-                >
-                  {navItem.label}
-                  {navItem.children ? <ChevronDownIcon w={5} h={5} /> : ''}
-                </Link>
-              )}
             </PopoverTrigger>
 
-            {navItem.children && (
-              <PopoverContent
-                border={0}
-                boxShadow={'xl'}
-                bg={popoverContentBgColor}
-                p={4}
-                rounded={'xl'}
-                color={linkHoverColor}
-                w="auto"
-              >
-                <Grid templateColumns={'repeat(2,1fr)'} gap="30px" p="10px">
-                  {navItem.children.map(child => (
-                    <DesktopSubNav key={child.image} {...child} />
-                  ))}
-                </Grid>
-              </PopoverContent>
-            )}
+            <PopoverContent
+              border={0}
+              boxShadow={'xl'}
+              bg={popoverContentBgColor}
+              p={4}
+              rounded={'xl'}
+              color={linkHoverColor}
+              w="auto"
+            >
+              <Grid templateColumns={'repeat(2,1fr)'} gap="30px" p="10px">
+                {listCategory.map(child => (
+                  <DesktopSubNav key={`category_${child.ma}`} {...child} />
+                ))}
+              </Grid>
+            </PopoverContent>
           </Popover>
         </Box>
-      ))}
     </Flex>
   );
 };
 
-const DesktopSubNav = ({ image, href, subLabel }) => {
+const DesktopSubNav = ({ ma,ten,mo_ta }) => {
   const text = useColorModeValue('light', 'dark');
   const textColor = text === 'dark' ? 'gray.100' : 'blackAlpha.900';
   return (
     <NavLink
-      to="/products"
+      // to={`/product/by-category/${ma}`}
+      to={`/products`}
       role={'group'}
       display={'block'}
       rounded={'md'}
@@ -491,8 +478,7 @@ const DesktopSubNav = ({ image, href, subLabel }) => {
     >
       <Stack direction={'row'} align={'center'}>
         <Flex gap="20px" pr="100px" alignItems={'center'}>
-          <Image src={image} w="70px" h="70px" />
-          <Text fontSize={'sm'}>{subLabel}</Text>
+          <Text fontSize={'sm'}>{ten}</Text>
         </Flex>
         <Flex
           transition={'all .3s ease'}

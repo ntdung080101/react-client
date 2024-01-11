@@ -16,16 +16,16 @@ import { updateCartFn } from '../../redux/CartReducer/action';
 
 import { ChevronDownIcon, DeleteIcon } from '@chakra-ui/icons';
 import axios from 'axios';
+import { SERVER_URL } from '../../constraint';
 
 
 
 export default function CartItem({
-  id,
-  title,
-  brand,
-  image,
-  price,
-  color,
+  ma,
+  ten,
+  gia,
+  loai,
+  imagePath,
   quantity,
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -42,14 +42,14 @@ export default function CartItem({
 
   let totalPrice = 0;
   cart.forEach((cartItem) => {
-    totalPrice += cartItem.price * cartItem.quantity;
+    totalPrice += cartItem.gia * cartItem.quantity;
   }); // this for shoing total price
 
 
   const handleQuantity = (e) => {
 
     const upDatedData = cart.map((el) => {
-      return el.id === id ? { ...el, quantity: +e.target.value } : el;
+      return el.ma === ma ? { ...el, quantity: +e.target.value } : el;
     })
 
     dispatch(updateCartFn(upDatedData));
@@ -59,15 +59,10 @@ export default function CartItem({
 
   const handleDeleteQty = () => {
     const upDatedData = cart.filter((el) => {
-      return el.id !== id
+      return el.ma !== ma
     })
-    axios.delete(`https://viridian-confusion-henley.glitch.me/cart/${id}`);
     dispatch(updateCartFn(upDatedData));
   };
-
-
-
-
 
   return (
 
@@ -77,17 +72,17 @@ export default function CartItem({
       <Box display={'flex'} flexDirection={{ base: "column", md: "row" }} alignItems={'center'} justifyContent={{ base: 'center', md: "space-between" }} gap={'20px'}>
 
        <Flex justifyContent={{base:'space-between'}} gap={{base:'30px'}}>
-       <Image width={{ base: "160px", sm: '200px', md: '100px', lg: '150px', xl: '200px' }} src={image} alt={title} />
+       <Image width={{ base: "160px", sm: '200px', md: '100px', lg: '150px', xl: '200px' }} src={`${SERVER_URL}${imagePath[0]}`} alt={ten} />
         <Box className='TitleColorBrand' display={'flex'} flexDirection={'column'} justifyContent={'center'}>
-          <Text fontWeight={'bold'} fontSize={'20px'}>{title.substring(0,15)}...</Text>
-          <Text fontWeight={'bold'} color={'orange.400'}>Hiệu: {brand}</Text>
+          <Text fontWeight={'bold'} fontSize={'20px'}>{ten}...</Text>
+          <Text fontWeight={'bold'} color={'orange.400'}>Hiệu: {loai}</Text>
         </Box>
        </Flex>
 
         <Box display={'flex'} flexDirection={'row'} justifyContent={'center'} gap={'20px'} alignItems={'center'}>
 
 
-          <Text fontWeight={'bold'} fontSize={'15px'}>{price} {' VNĐ'}</Text>
+          <Text fontWeight={'bold'} fontSize={'15px'}>{gia} {' VNĐ'}</Text>
 
 
           <Select placeholder={quantity} onChange={handleQuantity} w={{ base: '100px', }}>
@@ -97,9 +92,6 @@ export default function CartItem({
             <option value='4'> 4</option>
             <option value='5'> 5</option>
           </Select>
-
-
-
           <Button onClick={handleDeleteQty}><DeleteIcon fontSize={"20px"} color={'red.500'} /></Button>
 
         </Box>
@@ -107,9 +99,6 @@ export default function CartItem({
       </Box>
 
       <Box className='actions' display={'flex'} flexDirection='row' justifyContent={{base:'space-evenly',md:'flex-end'}} alignItems={"center"}>
-
-
-        <Button variant="outline" color={'green'} border={'none'} >Thêm vào yêu thích</Button>
       </Box>
       <Divider />
       <Divider />

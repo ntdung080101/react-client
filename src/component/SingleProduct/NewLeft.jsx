@@ -1,10 +1,11 @@
 import { Box, Flex, HStack, Image, Text, flexbox } from '@chakra-ui/react';
 import React, { useState } from 'react';
+import { SERVER_URL } from '../../constraint';
 
 const NewLeft = props => {
   const [index, setIndex] = useState(0);
   const { spData } = props;
-  const { image } = spData;
+  const { imagePath } = spData;
 
   return (
     <Box
@@ -23,7 +24,7 @@ const NewLeft = props => {
         bg="gray.100"
         justifyContent="space-around"
       >
-        {image?.map((el, i) => {
+        {imagePath?.map((el, i) => {
           return (
             <Box
               onMouseEnter={() => {
@@ -33,7 +34,7 @@ const NewLeft = props => {
               className="sub-img-1"
             >
               {' '}
-              <Image src={el} alt="dthr" h="100%" w="100px" />
+              <Image src={`${SERVER_URL}${el}`} alt="dthr" h="100%" w="100px" />
             </Box>
           );
         })}
@@ -47,7 +48,7 @@ const NewLeft = props => {
         borderBottom={'2px'}
       >
         <Box>
-          <Image src={image && image[index]} alt="" w="100%" h={{base:'400px',md:'450px'}} />
+          <Image src={imagePath && `${SERVER_URL}${imagePath[index]}`} alt="" w="100%" h={{base:'400px',md:'450px'}} />
         </Box>
       </Box>
     </Box>

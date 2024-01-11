@@ -17,28 +17,27 @@ import {
   getCartServerdata,
   postSingleProductItem,
 } from '../../redux/CartReducer/action';
+import {SERVER_URL} from '../../constraint';
 import { SearchContext } from '../../context/SearchContextProvider';
 export const ProductCard = ({
-  id,
-  title,
-  image,
-  price,
-  description,
-  rating,
+  ma,
+  ten,
+  imagePath,
+  gia,
+  mo_ta,
   review,
-  discount,
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const toast = useToast();
   const products = useSelector(store => store.productReducer.products);
   const [state, setState] = useState(false);
+  const [rating, setRating] = useState(5);
   const {setStatus} = useContext(SearchContext);
 
   const handleAdd = () => {
-    let d = products.find(el => el.id === id);
+    let d = products.find(el => el.ma === ma);
     dispatch(postSingleProductItem({...d, quantity : 1})).then(res => {
-      dispatch(getCartServerdata());
       toast({
         title: 'Ok!!',
         description: 'Thêm sản phẩm thành công',
@@ -50,6 +49,7 @@ export const ProductCard = ({
       setState(true);
     });
   };
+
   return (
     <Flex direction={'column'} pos={'relative'} borderRadius={'12px'} bgColor={useColorModeValue('white', 'gray.800')} boxShadow={'1px 1px 10px'} padding={'5px'}
       _hover={{boxShadow: '5px 5px 10px', transition: '.3s'}}
@@ -62,11 +62,11 @@ export const ProductCard = ({
           display={'flex'}
         >
           <Image
-            src={image[0]}
+            src={`${SERVER_URL}${imagePath[0]}`}
             alt="image"
             height={'220px'}
             width={'260px'}
-            onClick={() => navigate(`/products/${id}`)}
+            onClick={() => navigate(`/products/${ma}`)}
           />
         </Box>
       </Box>
@@ -78,26 +78,18 @@ export const ProductCard = ({
           fontFamily={'sans-serif'}
           pt={'10px'}
         >
-          {title.length < 20 ? title : title.substring(0, 20)}...
+          {ten.length < 20 ? ten : ten.substring(0, 20)}...
         </Text>
         <Flex justifyContent={'space-between'}>
           <Flex>
             <Text fontWeight={'bold'} fontSize={'18px'} mt={'2px'} pt={'0px'} color={'#ff4318'}>
-              {price + '00 VNĐ'}
+              {gia + '00 VNĐ'}
             </Text>
           </Flex>
 
-          <Text
-            fontWeight={'bold'}
-            fontSize={'22px'}
-            mt={'1px'}
-            color={'green'}
-          >
-            {discount > 0 ? discount + '%' : ''}
-          </Text>
         </Flex>
         <Text fontSize={'14px'} opacity="80%">
-          {description.substring(0, 30)}...
+          {mo_ta.substring(0, 30)}...
         </Text>
         <Flex>
           <Text color={'yellow'} fontSize={'19px'}>
@@ -146,6 +138,7 @@ export const ProductCard = ({
           </Button>
         )}
       </Stack>
+      
       <Button
         p="10px"
         bg="white"

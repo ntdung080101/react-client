@@ -2,6 +2,7 @@ import { LOGIN_USER, LOGIN_USER_FAILURE, LOGIN_USER_SUCCESSFUL, REGISTER_USER, R
 
 const initialState = {
     isLoading : false,
+    isInitComplete: false,
     isAuth : false,
     isRegistered : false,
     users : [],
@@ -22,6 +23,7 @@ export const reducer = (state = initialState, {type, payload}) => {
                 ...state,
                 isLoading : false,
                 isRegistered : true,
+                isError: false,
                 users : [...state.users, payload]
             }
         }

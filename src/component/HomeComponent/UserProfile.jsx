@@ -27,12 +27,12 @@ function UserProfile({ name, children, data }) {
 
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalContent>
-                    <ModalHeader textAlign={'center'}>{data.firstName} {data.lastName}</ModalHeader>
+                    <ModalHeader textAlign={'center'}>{data.name}</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody display={'flex'} justifyContent={'center'}>
                             <Flex direction={'column'} justifyContent={'center'}>
-                            <Avatar m={'auto'} src={data.pic} h="150px" w="150px" name={`${data.firstName} ${data.lastName}`} size={'lg'} />
-                            <Text fontSize="20px">{data.email}</Text>
+                            <Avatar m={'auto'} src={data.pic} h="150px" w="150px" name={`${data.name}`} size={'lg'} />
+                            {/* <Text fontSize="20px">{data.address}</Text> */}
                             </Flex>
                     </ModalBody>
 

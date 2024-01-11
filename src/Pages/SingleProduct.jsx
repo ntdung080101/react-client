@@ -22,6 +22,7 @@ import NewRight from '../component/SingleProduct/NewRight';
 import { extendTheme } from '@chakra-ui/react';
 import Footer from '../component/HomeComponent/Footer';
 import CommentBox from '../component/SingleProduct/CommentBox';
+import axios from '../utils/axios';
 
 // 2. Update the breakpoints as key-value pairs
 const breakpoints = {
@@ -32,23 +33,30 @@ const breakpoints = {
   '2xl': '1536px',
 };
 
-// 3. Extend the theme
+
 const theme = extendTheme({ breakpoints });
 
 const SingleProduct = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-
-  console.log('id at single page', id);
-  // const data=useSelector((store)=> store.productReducer.data)
-  // const singleData=data.find((singleData)=>singleData.id === parseInt(id));
-
-  const spData = useSelector(store => store.productReducer.data);
-
-  console.log('data at single Page ', spData);
+  const [spData, setSpData] = useState(null);
 
   useEffect(() => {
-    dispatch(singleProductfunc(id));
+    axios.get('product/get',{
+      params: {
+        code: id
+      }
+    })
+    .then(result=>{
+      console.log(result.data.message)
+      setSpData(result.data.message)
+    })
+    .catch(error=>{
+      console.log(error);
+      alert('sản phẩm đã hết!');
+
+      navigator('/',3000);
+    })
   }, []);
 
   useEffect(() => {
